@@ -5,6 +5,10 @@
  */
 package com.martijncourteaux.axisgamehelper;
 
+import java.io.File;
+import java.util.Locale;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author martijncourteaux
@@ -17,7 +21,16 @@ public class AxisGameHelper
      */
     public static void main(String[] args)
     {
-        // TODO code application logic here
+        Locale.setDefault(Locale.US);
+
+        JFileChooser fc = new JFileChooser(new File(new File(System.getProperty("user.home")), "Desktop"));
+        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+        {
+            DrawFrame dw = new DrawFrame(fc.getSelectedFile());
+            dw.setSize(500, 400);
+            dw.setLocationRelativeTo(null);
+            dw.setVisible(true);
+        }
     }
-    
+
 }
