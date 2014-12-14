@@ -24,7 +24,7 @@ public class PathFunctionCreator
         {
             Vector2d target = points.get(i);
             double yDiff = target.y - lastHeight;
-            sb.append(String.format("+%.2f*exp(1-exp(-9(x-%.2f)))", yDiff/Math.E, target.x));
+            sb.append(String.format("+%.2f*exp(-exp(-9(x-%.2f)))", yDiff, target.x));
             lastHeight += Math.round(yDiff * 100.0) * 0.01; 
         }
         return sb.substring(1);
