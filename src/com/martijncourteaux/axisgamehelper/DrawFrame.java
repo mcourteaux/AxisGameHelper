@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -28,6 +29,7 @@ import javax.swing.JComponent;
 public class DrawFrame extends javax.swing.JFrame
 {
 
+    private AxisPanel panel;
     private List<Vector2d> path = new ArrayList<Vector2d>();
     private List<Vector2d> rages = new ArrayList<Vector2d>();
 
@@ -37,8 +39,9 @@ public class DrawFrame extends javax.swing.JFrame
     public DrawFrame(File img)
     {
         initComponents();
+        panel = new AxisPanel(img);
         pnlDraw.setLayout(new BorderLayout());
-        pnlDraw.add(new AxisPanel(img));
+        pnlDraw.add(panel);
         pack();
     }
 
@@ -87,14 +90,26 @@ public class DrawFrame extends javax.swing.JFrame
     {
 
         controlPnl = new javax.swing.JPanel();
+        btnOpen = new javax.swing.JButton();
         btnPath = new javax.swing.JToggleButton();
         btnRages = new javax.swing.JToggleButton();
         fldOutput = new javax.swing.JTextField();
         pnlDraw = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Axis The Game Helper");
 
         controlPnl.setLayout(new java.awt.GridLayout());
+
+        btnOpen.setText("Open");
+        btnOpen.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                btnOpenActionPerformed(evt);
+            }
+        });
+        controlPnl.add(btnOpen);
 
         btnPath.setText("Path");
         btnPath.addActionListener(new java.awt.event.ActionListener()
@@ -130,6 +145,7 @@ public class DrawFrame extends javax.swing.JFrame
         if (btnPath.isSelected())
         {
             path.clear();
+            rages.clear();
             btnRages.setSelected(false);
         }
     }//GEN-LAST:event_btnPathActionPerformed
@@ -143,6 +159,20 @@ public class DrawFrame extends javax.swing.JFrame
         }
     }//GEN-LAST:event_btnRagesActionPerformed
 
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_btnOpenActionPerformed
+    {//GEN-HEADEREND:event_btnOpenActionPerformed
+
+        JFileChooser fc = new JFileChooser(new File(new File(System.getProperty("user.home")), "Desktop"));
+        if (fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
+        {
+            panel.setImage(fc.getSelectedFile());
+            path.clear();
+            rages.clear();
+            calc();
+        }
+
+    }//GEN-LAST:event_btnOpenActionPerformed
+
     public class AxisPanel extends JComponent implements MouseMotionListener, MouseListener
     {
 
@@ -153,6 +183,11 @@ public class DrawFrame extends javax.swing.JFrame
         {
             addMouseMotionListener(this);
             addMouseListener(this);
+            setImage(img);
+        }
+        
+        public void setImage(File img)
+        {
             try
             {
                 this.img = ImageIO.read(img);
@@ -250,6 +285,7 @@ public class DrawFrame extends javax.swing.JFrame
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOpen;
     private javax.swing.JToggleButton btnPath;
     private javax.swing.JToggleButton btnRages;
     private javax.swing.JPanel controlPnl;
